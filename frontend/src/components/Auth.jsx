@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-
+import axios from "axios";
 
 export const Auth = ({ type }) => {
   const navigate = useNavigate();
@@ -12,20 +12,26 @@ export const Auth = ({ type }) => {
     password: ""
   });
 
+  if(loading){
+    return <div>
+        loading...
+    </div>
+  }
+
  
 
   async function SendRequest() {
     try {
       setLoading(true);
-      const response = await axios.post(
-        `${BACKEND_URL}/api/v1/user/${type === "signup" ? "signup" : "signin"}`,
+      const response = await axios.post("/register",
         postinputs
       );
-      const jwt = response.data.jwt;
-      localStorage.setItem("token", jwt);
+     // const jwt = response.data.jwt;
+     // localStorage.setItem("token", jwt);
       setLoading(false);
-      navigate("/blogs");
+      //navigate("/blogs");
     } catch (e) {
+        setLoading(false);
       alert("error");
     }
   }

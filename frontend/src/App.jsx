@@ -6,6 +6,8 @@ import { Routes ,Route} from 'react-router-dom'
 import { Signup } from './pages/Signup'
 import{Signin} from './pages/Signin'
 import Layout from './Layout'
+import axios from 'axios'
+axios.defaults.baseURL=" http://localhost:4000"
 function App() {
  
   return <div className="">
