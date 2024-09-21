@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import axios from "axios";
+import { UserContext } from "../UserContext";
 
 export const Auth = ({ type }) => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export const Auth = ({ type }) => {
     email: "",
     password: ""
   });
+ const{setUser}= useContext(UserContext)
 
   if(loading){
     return <div>
@@ -23,13 +25,14 @@ export const Auth = ({ type }) => {
   async function SendRequest() {
     try {
       setLoading(true);
-      const response = await axios.post("/register",
-        postinputs
+      const response = await axios.post(`/${type==="signup"?"signup":"signin"}`,
+        postinputs,  {withCredentials:true}
       );
+      setUser(response.data)
      // const jwt = response.data.jwt;
      // localStorage.setItem("token", jwt);
       setLoading(false);
-      //navigate("/blogs");
+      navigate("/");
     } catch (e) {
         setLoading(false);
       alert("error");
@@ -40,8 +43,8 @@ export const Auth = ({ type }) => {
     <div className="h-screen flex justify-center flex-col">
       <div className="flex justify-center">
         <div>
-          <div className="font-semibold text-3xl px-5">Create an Account</div>
-          <div className="text-slate-400 px-6 font-semibold">
+          {type=== "signup"?<div className=" text-3xl  px-5">Create an Account</div>:<div className=" text-center text-3xl px-5">Login </div>}
+          <div className="text-slate-400 px-6 ">
             {type === "signin" ? "Don't have an account?" : "Already have an account?"}
             <Link to={type === "signin" ? "/signup" : "/signin"} className="underline pl-2">
               {type === "signin" ? "Sign up" : "Sign in"}
