@@ -1,18 +1,25 @@
 const express =require('express');
 const cors=require('cors');
-const User= require('./models/user')
+const User= require('../backend/models/user')
+const Place =require('../backend/models/place')
 const mongoose=require("mongoose");
 const bcrypt=require('bcryptjs')
 const jwt =require('jsonwebtoken')
 const { log } = require('console');
 const cookieParser=require('cookie-parser')
+const  download= require('image-downloader')
+const fs=require('fs')
+
+const multer =require('multer');
+const { title } = require('process');
 require('dotenv').config()
 const app=express();
 
 const bcryptsalt=bcrypt.genSaltSync(10);
 const jwtsecret="ABcDS"
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
+app.use('/uploads',express.static(__dirname + "/uploads"))
 app.use(cors({
 credentials:true,
     origin:" http://localhost:5173"
@@ -77,4 +84,52 @@ app.post('/logout',(req,res)=>{
     res.cookie('token',"").json(true)
 })
 
+app.post('/upload-by-link', async(req,res)=>{
+    const{link}=req.body;
+    const newName= Date.now()+'.jpg'
+  
+
+    if (!link) {
+        return res.status(400).json({ message: 'No link provided' });
+    }
+    await download.image({
+        url:link,
+        dest:__dirname +'/uploads/'+ newName,
+    });
+    res.json( newName)
+})
+
+const photosMiddleware=multer({dest:"uploads/"})
+app.post('/upload', photosMiddleware.array('photos', 100) ,(req,res)=>{
+ const uploadedFiles=[]
+    for(let i =0;i<req.files.length;i++){
+    const {path,originalname}=req.files[i];
+    const parts =originalname.split('.');
+    const ext =parts[parts.length-1]
+    const newPath= path +  "." + ext
+fs.renameSync(path,newPath)
+const finalPath = newPath.replace(/\\/g, '/').replace('uploads/', '');
+uploadedFiles.push(finalPath);
+ }
+    res.json(uploadedFiles);
+
+})
+
+app.post('/places',async(req,res)=>{
+    const {token} =req.cookies;
+    jwt.verify(token,jwtsecret,{},async(err,userData)=>{
+        const { title, address, description, perks, extraInfo, checkin, checkOut, maxGuests, existingPhotos } = req.body;
+        if(err)throw err;
+   const placeDoc=  await Place.create({
+            owner:userData.id,
+            title,
+            photos: existingPhotos,
+            address,description,
+            perks,extraInfo,checkin,checkOut,maxGuests
+          
+    })
+   res.json(placeDoc)
+    })
+
+})
 app.listen(4000)

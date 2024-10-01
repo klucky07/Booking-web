@@ -3,6 +3,7 @@ import { UserContext } from "../UserContext"
 import { Navigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Places from "../components/Places";
 export default function Account(){
    const {user,ready ,setUser}=useContext(UserContext);
    const [redirect,setRedirect]=useState(null)
@@ -34,6 +35,9 @@ export default function Account(){
     if(type===subpage ){
         classes += ' bg-red-500 text-white rounded-full shadow-red-800 shadow-md'
     }
+    else{
+        classes +=' bg-gray-200 rounded-full mx-2  '
+    }
 return classes
    }
     return(
@@ -49,6 +53,11 @@ return classes
                     <button onClick={logout } className="bg-red-500 text-white p-1 mt-3 rounded-full px-6">Logout</button>
                 </div>
             )}
+            {subpage==='places'&&(
+  <Places/>
+  
+            )}
+          
         </div>
     )
 }
