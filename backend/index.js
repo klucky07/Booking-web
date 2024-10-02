@@ -118,14 +118,14 @@ uploadedFiles.push(finalPath);
 app.post('/places',async(req,res)=>{
     const {token} =req.cookies;
     jwt.verify(token,jwtsecret,{},async(err,userData)=>{
-        const { title, address, description, perks, extraInfo, checkin, checkOut, maxGuests, existingPhotos } = req.body;
+        const { title, address, description, perks, extraInfo, checkin, checkOut, maxGuests, existingPhotos,price } = req.body;
         if(err)throw err;
    const placeDoc=  await Place.create({
             owner:userData.id,
             title,
             photos: existingPhotos,
             address,description,
-            perks,extraInfo,checkin,checkOut,maxGuests
+            perks,extraInfo,checkin,checkOut,maxGuests,price
           
     })
    res.json(placeDoc)
@@ -146,5 +146,10 @@ app.get('/places/:id',async(req,res)=>{
    const {id} =req.params;
    res.json(await Place.findById(id));
     })
+
+app.get('/home-places', async (req,res)=>{
+        res.json(await Place.find())
+    })
+
 
 app.listen(4000)

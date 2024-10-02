@@ -14,6 +14,7 @@ export const Addplace = () => {
     const [checkout, setCheckout] = useState('');
     const [maxguest, setMaxguest] = useState(1);
     const [redirect, setRedirect] = useState(false)
+    const [price,setPrice]=useState(100)
 
     const handlePerkChange = (event) => {
         const { checked, name } = event.target;
@@ -37,7 +38,7 @@ export const Addplace = () => {
         await axios.post('/places', {
             title,
             address, perks, extraInfo, checkin, existingPhotos, description,
-            checkout, maxguest
+            checkout, maxguest,price,
         });
         setRedirect(true)
 
@@ -184,7 +185,7 @@ export const Addplace = () => {
                 }} />
                 <h2 className="text-2xl mt-4">check in & Out time</h2>
                 <p className="text-gray-500 text-sm">add check in and out time </p>
-                <div className="grid gap-2 grid-cols-3">
+                <div className="grid gap-2 grid-cols-2 md:grid-cols-4">
                     <div>
                         <h3 className="mt-2 -mb-1">Check in time </h3>
                         <input value={checkin} onChange={ev => {
@@ -202,6 +203,12 @@ export const Addplace = () => {
                         <h3 className="mt-2 -mb-1">max guests </h3>
                         <input value={maxguest} onChange={ev => {
                             setMaxguest(ev.target.value)
+                        }} type="text" />
+                    </div>
+                    <div>
+                        <h3 className="mt-2 -mb-1">Price per night </h3>
+                        <input value={price} onChange={ev => {
+                            setPrice(ev.target.value)
                         }} type="text" />
                     </div>
 

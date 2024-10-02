@@ -62,6 +62,7 @@ useEffect(()=>{
                     </div>
                     <div>
                             <p>{place.description}</p>
+                            <p>{place.price}</p>
                         </div>
                     </Link>
                 ))}

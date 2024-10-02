@@ -11,6 +11,7 @@ import { UserContextProvider } from './UserContext'
 import Account from './pages/Account'
 import { Addplace } from './components/Addplace'
 import Places from './components/Places'
+import Placepage from './pages/Placepage'
 axios.defaults.baseURL=" http://localhost:4000";
 axios.defaults.withCredentials=true; 
 function App() {
@@ -26,7 +27,7 @@ function App() {
    <Route path="/account/:subpage?" element={<Account/>} />
    <Route path="/account/:subpage/:action" element={<Account/>} />
    <Route path="/account/places/:id" element={<Addplace/>} />
-
+<Route path='/place/:id' element={<Placepage/>}/>
       </Route>
   
     </Routes>
