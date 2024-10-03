@@ -118,14 +118,14 @@ uploadedFiles.push(finalPath);
 app.post('/places',async(req,res)=>{
     const {token} =req.cookies;
     jwt.verify(token,jwtsecret,{},async(err,userData)=>{
-        const { title, address, description, perks, extraInfo, checkin, checkOut, maxGuests, existingPhotos,price } = req.body;
+        const { title, address, description, perks, extraInfo, checkin, checkout, maxguest, existingPhotos,price } = req.body;
         if(err)throw err;
    const placeDoc=  await Place.create({
             owner:userData.id,
             title,
             photos: existingPhotos,
             address,description,
-            perks,extraInfo,checkin,checkOut,maxGuests,price
+            perks,extraInfo,checkin,checkOut:checkout,maxGuests:maxguest,price
           
     })
    res.json(placeDoc)

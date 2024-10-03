@@ -12,7 +12,10 @@ export const Home = () => {
         })
     }, [])
 
-    return (<div className="grid grid-cols-2  md:grid-cols-3 gap-4 mt-8  lg:grid-cols-4">
+    return (  <div className="w-full flex justify-center">
+
+    
+    <div className="grid grid-cols-2  md:grid-cols-3 gap-4 mt-8  lg:grid-cols-4">
         {places.length > 0 && places.map(place => (
             <Link to={'/place/'+place._id} className="m-4  border-b ">
                 <div className="bg-gray-500 rounded-2xl">
@@ -28,5 +31,6 @@ export const Home = () => {
             </Link>
 
         ))}
+    </div>
     </div>)
 }
