@@ -2,6 +2,7 @@ const express =require('express');
 const cors=require('cors');
 const User= require('../backend/models/user')
 const Place =require('../backend/models/place')
+const Booking=require("../backend/models/Booking")
 const mongoose=require("mongoose");
 const bcrypt=require('bcryptjs')
 const jwt =require('jsonwebtoken')
@@ -150,6 +151,19 @@ app.get('/places/:id',async(req,res)=>{
 app.get('/home-places', async (req,res)=>{
         res.json(await Place.find())
     })
+
+app.post('/bookings',  async (req,res)=>{
+    const {checkin,checkOut,place,
+        name,phoneno,noofguest,price
+    } =req.body;
+
+const booking = await Booking.create({
+    checkin,checkOut,place,
+        name,phoneno,noofguest,price
+})
+
+res.json(booking)
+})    
 
 
 app.listen(4000)
