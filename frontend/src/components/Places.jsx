@@ -9,19 +9,6 @@ export default function Places() {
     const { action } = useParams();
    
 
-    // useEffect(()=>{
-    //     if(!id){
-    //         return;
-    //     }
-    //     axios.get('/places/' +id)
-    //         .then(response=>{
-    //             const {data} =response;
-    //             setTitle(data.title);
-    //             setAddress(data.address);
-    //             setDexcriptiom(data.description)
-    //             setexis
-    //         })
-    // },[id])
 
     // function InputHEader(text){
     //     return (

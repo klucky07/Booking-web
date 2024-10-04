@@ -30,6 +30,14 @@ credentials:true,
 app.get('/test',(req,res)=>{
     res.json("test ok")
 })
+function getUserDataFromReq(req) {
+    return new Promise((resolve, reject) => {
+      jwt.verify(req.cookies.token, jwtsecret, {}, async (err, userData) => {
+        if (err) throw err;
+        resolve(userData);
+      });
+    });
+  }
 
 app.post("/signup",async(req,res)=>{
     const {name,email,password}=req.body;
@@ -153,17 +161,27 @@ app.get('/home-places', async (req,res)=>{
     })
 
 app.post('/bookings',  async (req,res)=>{
+    const userData=await getUserDataFromReq(req)
     const {checkin,checkOut,place,
         name,phoneno,noofguest,price
     } =req.body;
 
 const booking = await Booking.create({
     checkin,checkOut,place,
-        name,phoneno,noofguest,price
+        name,phoneno,noofguest,price,
+        user:userData.id
 })
 
 res.json(booking)
 })    
 
+app.get('/bookings',async (req,res)=>{
+   const userData = await getUserDataFromReq(req);
+   res.json(await Booking.find({user:userData.id}).populate('place'))
+})
 
+app.put('/places/:id',async(req,res)=>{
+    const {id} =req.params;
+    res.json(await Place.findByIdAndUpdate(id));
+     })
 app.listen(4000)

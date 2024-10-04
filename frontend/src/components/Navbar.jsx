@@ -13,18 +13,18 @@ export const Navbar = () => {
                 <span className="font-bold">hotels </span>
             </Link>
             <div className="flex text-slate-600 font-semibold border-2 rounded-full gap-4 py-3 px-4 shadow shadow-gray-200 ">
-                <div >Anywhere</div>
+                <div >Hotels</div>
                 <div className=" border-r-2  border-slate-300"></div>
-                <div> Any week</div>
+                <div>Villas</div>
                 <div className=" border-r-2  border-slate-300"></div>
-                <div> Add guest</div>
-                <div className=" border-r-2  border-slate-300"></div>
-                <button className="bg-red-300 text-white rounded-full p-2">
+                <div> Resorts</div>
+                
+                {/* <button className="bg-red-300 text-white rounded-full p-2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                     </svg>
 
-                </button>
+                </button> */}
             </div>
             <Link to={user?'/account':'/signin'} className="flex items-center text-slate-600 font-semibold border-2 rounded-full gap-4  p-2 m-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">

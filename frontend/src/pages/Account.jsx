@@ -4,6 +4,7 @@ import { Navigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Places from "../components/Places";
+import Bookingspage from "./Bookingspage";
 export default function Account(){
    const {user,ready ,setUser}=useContext(UserContext);
    const [redirect,setRedirect]=useState(null)
@@ -56,6 +57,9 @@ return classes
             {subpage==='places'&&(
   <Places/>
   
+            )}
+            {subpage==='bookings' &&(
+                <Bookingspage/>
             )}
           
         </div>

@@ -30,7 +30,7 @@ function App() {
    <Route path="/account/:subpage/:action" element={<Account/>} />
    <Route path="/account/places/:id" element={<Addplace/>} />
 <Route path='/place/:id' element={<Placepage/>}/>
-<Route path='/account/bookings' element={<Bookingspage/>}/>
+{/* <Route path='/account/bookings' element={<Bookingspage/>}/> */}
 <Route path='/account/bookings/:id' element={<Bookingpage/>}/>
       </Route>
   

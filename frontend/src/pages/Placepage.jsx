@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import Bookingwid from "../components/Bookingwid";
+import PlaceImg from "../components/PlaceImg";
 
 export default function Placepage() {
     const { id } = useParams();
@@ -54,12 +55,8 @@ export default function Placepage() {
                                     setShowPhotos(true)
                                 }} className="  grid w-2/3 gap-2 grid-cols-[2fr_1fr] rounded-3xl overflow-hidden">
                     <div className="w-full h-full relative">
-                        {place.photos?.[0] && (
-                            <div >
-                                <img className="aspect-square w-full h-full object-cover" src={'http://localhost:4000/uploads/' + place.photos[0]} alt="" />
-                            </div>
-
-                        )}</div>
+                      <PlaceImg place={place} />
+                      </div>
                     <div className="grid ">
                         {place.photos?.[1] && (
                             <img className="aspect-square object-cover" src={'http://localhost:4000/uploads/' + place.photos[1]} alt="" />
