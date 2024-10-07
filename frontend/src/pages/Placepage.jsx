@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import Bookingwid from "../components/Bookingwid";
 import PlaceImg from "../components/PlaceImg";
+import Banner from "../components/Banner";
 
 export default function Placepage() {
     const { id } = useParams();
     const [place, setPlace] = useState(null);
     const [showPhotos, setShowPhotos] = useState(false);
+    const [click,setClick]=useState(0)
+  
     useEffect(() => {
         if (!id) {
             return;
@@ -20,8 +23,14 @@ export default function Placepage() {
     if (!place) return " ";
 
     if (showPhotos) {
+        if(click<0 || click>place.photos.length-1){
+            return(
+                setClick(0)
+            )
+           }
         return (
             <div className="absolute inset-0 bg-white text-black bg-opacity-5  min-h-screen ">
+           
                 <div className="p-8 grid gap-4  bg-white  ">
                     <div>
                         <p className="text-2xl font-light mr-30"> Photos of {place.title}</p>
@@ -34,11 +43,54 @@ export default function Placepage() {
 
                             Close photos</button>
                     </div>
-                    {place?.photos?.length > 0 && place.photos.map(photo => (
+                    <div className="flex justify-center mt-8 items-center">
+                    <button
+                className="bg-gray-300 opacity-50 text-white p-2 rounded-full  hover:opacity-100 mx-2"
+                onClick={() => setClick(click - 1)}
+                style={{ height: '40px', width: '40px' }}
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="black"
+                    className="w-6 h-6"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18"
+                    />
+                </svg>
+            </button>
+                    {place?.photos?.length > 0 && 
                         <div className="flex justify-center w-1/2">
-                            <img src={'http://localhost:4000/uploads/' + photo} alt="" />
+                            <img src={'http://localhost:4000/uploads/' + place.photos[click]} alt="" />
                         </div>
-                    ))}
+                    }
+                      <button
+                className="bg-gray-300 opacity-50 text-white p-2 rounded-full hover:opacity-100 mx-2"
+                onClick={() => setClick(click + 1)}
+                style={{ height: '40px', width: '40px' }}
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="black"
+                    className="w-6 h-6"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                    />
+                </svg>
+            </button>
+                    </div>
+                   
                 </div>
 
             </div>
@@ -46,6 +98,7 @@ export default function Placepage() {
     }
     return (
         <div className="flex justify-center   py-4 px-2 bg-gray-50">
+               
             <div className="flex flex-col justify-center items-center">
                 <h1 className="text-3xl  text-gray-600">
                     {place.title}

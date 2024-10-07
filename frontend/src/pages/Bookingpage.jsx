@@ -45,7 +45,7 @@ export default function Bookingpage() {
         <div className="absolute inset-0 flex justify-between items-center">
           
             <button
-                className="bg-red-100 opacity-20 text-white p-2 rounded-full  hover:opacity-100 mx-2"
+                className="bg-red-100 opacity-50 text-white p-2 rounded-full  hover:opacity-100 mx-2"
                 onClick={() => setClick(click - 1)}
                 style={{ height: '40px', width: '40px' }}
             >
@@ -67,7 +67,7 @@ export default function Bookingpage() {
 
        
             <button
-                className="bg-red-100 opacity-25 text-white p-2 rounded-full hover:opacity-100 mx-2"
+                className="bg-red-100 opacity-50 text-white p-2 rounded-full hover:opacity-100 mx-2"
                 onClick={() => setClick(click + 1)}
                 style={{ height: '40px', width: '40px' }}
             >

@@ -3,6 +3,7 @@ import { Navbar } from "../components/Navbar"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import Banner from "../components/Banner"
 
 export const Home = () => {
     const [places, setPlaces] = useState([])
@@ -13,7 +14,7 @@ export const Home = () => {
     }, [])
 
     return (  <div className="w-full flex justify-center">
-
+    
     
     <div className="grid grid-cols-2   md:grid-cols-3 gap-4 mt-8  lg:grid-cols-4">
         {places.length > 0 && places.map(place => (
