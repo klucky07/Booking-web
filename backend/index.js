@@ -180,8 +180,30 @@ app.get('/bookings',async (req,res)=>{
    res.json(await Booking.find({user:userData.id}).populate('place'))
 })
 
-app.put('/places/:id',async(req,res)=>{
-    const {id} =req.params;
-    res.json(await Place.findByIdAndUpdate(id));
-     })
+
+
+     app.put('/places', async (req,res) => {
+       
+        const {token} = req.cookies;
+        const {
+          id, title,address,existingPhotos,description,
+          perks,extraInfo,checkin,checkout,maxguest,price,
+        } = req.body;
+        jwt.verify(token, jwtsecret, {}, async (err, userData) => {
+          if (err) throw err;
+          const placeDoc = await Place.findById(id);
+          if (userData.id === placeDoc.owner.toString()) {
+            placeDoc.set({
+                id,
+                title,
+                photos: existingPhotos,
+                address,description,
+                perks,extraInfo,checkin,checkOut:checkout,maxGuests:maxguest,price
+            });
+            await placeDoc.save();
+            res.json('ok');
+          }
+        });
+      });
+
 app.listen(4000)

@@ -3,40 +3,40 @@ import { Link, Navigate, useParams } from "react-router-dom"
 import axios from "axios";
 
 export const Addplace = () => {
-    const {id} =useParams();
+    const { id } = useParams();
     const [title, setTitle] = useState('');
     const [address, setAddress] = useState('');
     const [existingPhotos, setExistingPhotos] = useState([])
     const [photolink, setPhotolink] = useState('');
-    const [description, setDexcriptiom] = useState('');
+    const [description, setDescription] = useState('');
     const [perks, setPerks] = useState([]);
     const [extraInfo, setExtraInfo] = useState('');
     const [checkin, setCheckin] = useState('');
     const [checkout, setCheckout] = useState('');
     const [maxguest, setMaxguest] = useState(1);
     const [redirect, setRedirect] = useState(false)
-    const [price,setPrice]=useState(100)
+    const [price, setPrice] = useState(100)
 
 
-    
-    useEffect(()=>{
-        if(!id){
+
+    useEffect(() => {
+        if (!id) {
             return;
         }
-    axios.get('/places/'+id)
-            .then(response=>{
-            const {data} =response;
+        axios.get('/places/' + id)
+            .then(response => {
+                const { data } = response;
                 setTitle(data.title);
                 setAddress(data.address);
-                setDexcriptiom(data.description)
+                setDescription(data.description);
                 setExistingPhotos(data.photos)
                 setPerks(data.perks)
                 setCheckin(data.checkin)
                 setCheckout(data.checkout)
                 setMaxguest(data.maxguest)
                 setPrice(data.price)
-     })
-    },[id])
+            })
+    }, [id])
 
     const handlePerkChange = (event) => {
         const { checked, name } = event.target;
@@ -56,17 +56,23 @@ export const Addplace = () => {
     }
     async function addNewplace(ev) {
         ev.preventDefault();
-if(id){
+        if (id) {
+            await axios.put('/places', {
+                id,
+                title,
+                address, perks, extraInfo, checkin, existingPhotos, description,
+                checkout, maxguest, price,
+            });
+            setRedirect(true)
+        } else {
+            await axios.post('/places', {
+                title,
+                address, perks, extraInfo, checkin, existingPhotos, description,
+                checkout, maxguest, price,
+            });
+            setRedirect(true)
+        }
 
-}else{
-    
-}
-        await axios.post('/places', {
-            title,
-            address, perks, extraInfo, checkin, existingPhotos, description,
-            checkout, maxguest,price,
-        });
-        setRedirect(true)
 
     }
     useEffect(() => {
@@ -101,7 +107,7 @@ if(id){
 
     function removePhoto(filename) {
         setExistingPhotos((prevPhotos) => prevPhotos.filter((photo) => photo !== filename));
-      }
+    }
     return (
         <div className="w-full p-2 ">
             <div className="flex justify-center  text-white  ">
@@ -109,16 +115,16 @@ if(id){
             </div>
             <form onSubmit={addNewplace} className="" >
                 <h2 className="text-xl mt-4 pb-2 pl-2 ">Title</h2>
-                < input  value={title} onChange={ev => {
+                < input value={title} onChange={ev => {
                     setTitle(ev.target.value)
                 }} className="p-2 px-4 w-full border rounded-full " type="text" placeholder="title " />
                 <h2 className="text-xl mt-4 pl-2 pb-2">Address</h2>
-                < input  value={address} onChange={ev => {
+                < input value={address} onChange={ev => {
                     setAddress(ev.target.value)
                 }} className="p-2 px-4 w-full border rounded-full " type="text " placeholder="address" />
                 <h2 className="text-xl mt-4 pb-2 pl-2 ">photos</h2>
                 <div className="flex">
-                    < input  value={photolink} onChange={ev => {
+                    < input value={photolink} onChange={ev => {
                         setPhotolink(ev.target.value)
                     }} className="p-2 px-4 w-4/5 border rounded-full mb-4" type="text" placeholder={'add using a link....jpg'} />
                     <button onClick={addPhotobylink} className="bg-red-500 w-1/2 p-2 rounded-full mb-4 text-white">Add photo</button>
@@ -126,12 +132,12 @@ if(id){
                 </div>
                 <div className=" grid grid-cols-3 gap-2 lg:grid-cols-6 md:grid-col-4 ">
                     {existingPhotos.length > 0 && existingPhotos.map(link => (
-                        <div className="h-32 flex relative"  key={link}>
+                        <div className="h-32 flex relative" key={link}>
                             <img className="rounded-2xl" src={"http://localhost:4000/uploads/" + link} alt="error" />
-                            <button onClick={()=>{
+                            <button onClick={() => {
                                 removePhoto(link)
                             }} className=" absolute flex inset-0  " >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white"  className="size-4 hover:scale-125 bg-blend-normal   rounded-full m-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="size-4 hover:scale-125 bg-blend-normal   rounded-full m-2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                 </svg>
 
@@ -139,7 +145,7 @@ if(id){
                         </div>
                     ))}
                     <label className="cursor-pointer items-center flex justify-center border bg-transparent rounded-2xl p-8 text-2xl text-gray-600 ">
-                        < input className=" border mt-1 py-1 rounded-xl hidden" onChange={uploadphoto} type="file" multiple  />
+                        < input className=" border mt-1 py-1 rounded-xl hidden" onChange={uploadphoto} type="file" multiple />
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15" />
                         </svg>
@@ -148,8 +154,8 @@ if(id){
                     </label>
                 </div>
                 <h2 className="pt-2 px-2 text-xl ">Description</h2>
-                <textarea className="w-full border rounded-xl pt-2 mt-2" name={description} onChange={ev => {
-                    setDexcriptiom(ev.target.value)
+                <textarea className="w-full border rounded-xl pt-2 mt-2" value={description} onChange={ev => {
+                    setDescription(ev.target.value)
                 }} />
 
                 <h2>Perks</h2>
@@ -206,7 +212,7 @@ if(id){
 
                 <h2 className="text-2xl mt-4">Extra info</h2>
                 <p className="text-gray-500 text-sm">House rules </p>
-                <textarea className="w-full border rounded-xl mt-2" name={extraInfo} onChange={ev => {
+                <textarea className="w-full border rounded-xl mt-2" value={extraInfo} onChange={ev => {
                     setExtraInfo(ev.target.value)
                 }} />
                 <h2 className="text-2xl mt-4">check in & Out time</h2>
@@ -214,13 +220,13 @@ if(id){
                 <div className="grid gap-2 grid-cols-2 md:grid-cols-4">
                     <div>
                         <h3 className="mt-2 -mb-1">Check in time </h3>
-                        < input className=" border mt-1 py-1 rounded-xl" value={checkin} onChange={ev => {
+                        <input className=" border mt-1 py-1 rounded-xl" value={checkin} onChange={ev => {
                             setCheckin(ev.target.value)
                         }} type="text" />
                     </div>
                     <div>
                         <h3 className="mt-2 -mb-1">check out time</h3>
-                        < input className=" border mt-1 py-1 rounded-xl" value={checkout} onChange={ev => {
+                        <input className=" border mt-1 py-1 rounded-xl" value={checkout} onChange={ev => {
                             setCheckout(ev.target.value)
                         }}
                             type="text" />
@@ -233,16 +239,16 @@ if(id){
                     </div>
                     <div>
                         <h3 className="mt-2 -mb-1">Price per night </h3>
-                        < input className=" border mt-1 py-1 rounded-xl"  value={price} onChange={ev => {
+                        < input className=" border mt-1 py-1 rounded-xl" value={price} onChange={ev => {
                             setPrice(ev.target.value)
                         }} type="text" />
                     </div>
 
                 </div>
                 <div className="flex justify-center">
-                <button className="bg-red-500 py-2  mt-4 m-2 rounded-full text-white px-10  shadow-b shadow-sm text-clip"> Save</button>
+                    <button className="bg-red-500 py-2  mt-4 m-2 rounded-full text-white px-10  shadow-b shadow-sm text-clip"> Save</button>
                 </div>
-               
+
             </form>
 
 
