@@ -20,21 +20,20 @@ Click the image above to watch a demonstration of the project.
 
 - **Frontend**: 
   - React.js
-  - Redux (optional, if used for state management)
   - CSS/Tailwind CSS for styling
 - **Backend**: 
   - Node.js
   - Express.js
   - MongoDB (for database management)
 - **Others**: 
-  - JSON Web Tokens (JWT) for authentication
+  - JSON Web Tokens (JWT) for authentication and cookies.
   - Axios for HTTP requests
 
 ## Run locally
 
 To run this project fork the project and clone it to your local machine and then follow the commands.
 setup your mongo url 
-create a .env file and set you url with the name - MONGO_URL
+create a .env file in the backend folder and set your url with the name - MONGO_URL = "your database string here"
 
 
 for frontend
